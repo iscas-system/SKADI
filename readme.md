@@ -1,1 +1,1 @@
-SKADI: Scheduler with Operator Knowledge for Unseen and Multi-tenant DNN Inference on GPU
+SKADI: Scheduler based on Operator Features for Concurrent Inference with Unseen DNN Models on GPU
