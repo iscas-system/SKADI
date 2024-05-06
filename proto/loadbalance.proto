@@ -1,0 +1,86 @@
+syntax = "proto3";
+package DNNLoadBalancer;
+
+service DNNLoadBalancer { 
+  rpc LBInference(Query) returns (Result); 
+  rpc GetLayers(GetLayersRequest) returns (GetLayersResponse);
+  rpc GetPrediction(GetPredictionRequest) returns (GetPredictionResponse);
+  rpc GetResults(GetResultsRequest) returns (GetResultsResponse);
+}
+
+message Query {
+  int32 id = 1;
+  int32 model_id = 2;
+  int32 bs = 3;
+  int32 seq_len = 4;
+  double start_stamp = 5;
+  int32 qos_target = 6;
+  int32 load_id = 7;
+}
+
+message Result {
+  int32 node_id = 1;
+  bool accepted = 2;
+  double elapsed = 3;
+}
+
+
+
+message Layer { 
+  string name = 1; 
+  int32 num=2;
+}
+
+message Layers { 
+  repeated Layer layers = 1; 
+}
+
+message GetLayersRequest  { 
+  int32 start=1;
+  int32 end=2;
+  string model=3;
+  int32 bs=4;
+}
+
+message GetLayersResponse  { 
+  int32 code = 1;
+  string message = 2;
+  repeated Layers layers = 3; 
+}
+
+message GetPredictionRequest  { 
+  GetLayersRequest model1=1;
+  GetLayersRequest model2=2;
+}
+
+message GetPredictionResponse  { 
+  int32 code = 1;
+  string message = 2;
+  float prediction = 3; 
+  float actual = 4; 
+}
+
+message GetResultsRequest  { 
+  string model1 = 1;
+  string model2 = 2;
+  float load=3;
+  float deadline=4;
+  float query=5;
+}
+
+message ListOfFloats {
+   repeated float metric = 1;
+}
+
+message GetResultsResponse  { 
+  int32 code = 1;
+  string message = 2;
+  repeated float violation1 = 3; 
+  repeated float violation2 = 4; 
+  repeated float throughout1 = 5; 
+  repeated float throughout2 = 6; 
+  repeated float tail1 = 7;
+  repeated float tail2 = 8;
+  repeated float mean1 = 9;
+  repeated float mean2 = 10;
+}
